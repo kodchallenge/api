@@ -6,7 +6,7 @@ export default class CategoryRepository {
     public static async getList(): Promise<Model<Category, {}>[]> {
         return CategoryModel.findAll()
     }
-    public static async getById(id: number): Promise<Model<Category, {}>> {
+    public static async getById(id: number): Promise<Model<Category, {}> | null> {
         return CategoryModel.findByPk(id, {
             include: [{
                 model: ProblemModel,

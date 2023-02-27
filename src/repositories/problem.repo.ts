@@ -10,7 +10,7 @@ export default class ProblemRepository {
         return ProblemModel.findAll()
     }
 
-    public static async getById(id: number): Promise<Model<Problem, {}>> {
+    public static async getById(id: number): Promise<Model<Problem, {}> | null> {
         return ProblemModel.findByPk(id, {
             include: [ProblemBaseCodeModel]
         })
