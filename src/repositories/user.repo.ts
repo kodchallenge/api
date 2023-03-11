@@ -16,4 +16,17 @@ export class UserRepository {
             }
         })
     }
+    public static async getByEmail(email: string): Promise<Model<User, {}> | null> {
+        return UserModel.findOne({
+            where: {
+                email,
+                isDeleted: false,
+                isVerified: true,
+            }
+        })
+    }
+
+    public static async create(user: Omit<User, "id">): Promise<Model<User, {}>> {
+        return UserModel.create(user)
+    }
 }
