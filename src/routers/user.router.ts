@@ -1,7 +1,8 @@
 import Router from "express-promise-router";
-import { getUsers } from "../controllers/user.controller";
+import { getUserById, getUsers } from "../controllers/user.controller";
 
 const userRouter = Router()
 userRouter.get("/", getUsers)
+userRouter.get("/:id", getUserById)
 
 export default userRouter
