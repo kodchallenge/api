@@ -13,7 +13,8 @@ export class UserRepository {
                 id,
                 isDeleted: false,
                 isVerified: true,
-            }
+            },
+            attributes: { exclude: ["password"] },
         })
     }
     public static async getByEmail(email: string): Promise<Model<User, {}> | null> {

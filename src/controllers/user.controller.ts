@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { verifyToken } from "../configs/jwt";
 import { UserRepository } from "../repositories";
 
 export const getUsers = async (req: Request, res: Response) => {

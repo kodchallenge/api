@@ -8,6 +8,6 @@ export const generateToken = (user: Model<User, {}>) => {
         expiresIn: process.env.JWT_EXPIRES_IN,
     });
 }
-export const verifyToken = (token: string) => {
-    return jwt.verify(token, process.env.JWT_SECRET);
+export const verifyToken = (token: string, callback: (err: any, user: any) => void) => {
+    return jwt.verify(token, process.env.JWT_SECRET, callback);
 }
