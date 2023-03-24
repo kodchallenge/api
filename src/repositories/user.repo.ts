@@ -17,6 +17,18 @@ export class UserRepository {
             attributes: { exclude: ["password"] },
         })
     }
+
+    public static async getByUsername(username: string): Promise<Model<User, {}> | null> {
+        return UserModel.findOne({
+            where: {
+                username,
+                isDeleted: false,
+                isVerified: true,
+            },
+            attributes: { exclude: ["password"] },
+        })
+    }
+
     public static async getByEmail(email: string): Promise<Model<User, {}> | null> {
         return UserModel.findOne({
             where: {

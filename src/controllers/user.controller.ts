@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { verifyToken } from "../configs/jwt";
 import { UserRepository } from "../repositories";
 
@@ -8,7 +8,18 @@ export const getUsers = async (req: Request, res: Response) => {
 }
 
 
-export const getUserById = async (req: Request<{ id: number }>, res: Response) => {
-    const user = await UserRepository.getById(req.params.id)
+export const getUserById = async (req: Request<{ id: number }>, res: Response, next: NextFunction) => {
+    try {
+        parseInt(req.params.id) // check if id is a number
+        const user = await UserRepository.getById(req.params.id)
+        res.json(user)
+    } catch(err) {
+        next()
+    }
+}
+
+
+export const getUserByUsername = async (req: Request<{ username: string }>, res: Response) => {
+    const user = await UserRepository.getByUsername(req.params.username)
     res.json(user)
 }
