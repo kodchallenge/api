@@ -2,6 +2,7 @@ import Sequelize, { Model, ModelDefined } from "sequelize";
 import { KcContext } from "../configs/db";
 import { User } from "../types";
 import bcrypt from "bcrypt";
+import randomColor from "randomcolor";
 
 export const UserModel: ModelDefined<User, {}> = KcContext.define("users", {
     id: {
@@ -46,6 +47,28 @@ export const UserModel: ModelDefined<User, {}> = KcContext.define("users", {
         type: Sequelize.DATE,
         field: "verified_at"
     },
+    // 26.03
+    avatar: {
+        type: Sequelize.STRING,
+    },
+    biography: {
+        type: Sequelize.STRING,
+    },
+    location: {
+        type: Sequelize.STRING,
+    },
+    website: {
+        type: Sequelize.STRING,
+    },
+    github: {
+        type: Sequelize.STRING,
+    },
+    linkedin: {
+        type: Sequelize.STRING,
+    },
+    twitter: {
+        type: Sequelize.STRING,
+    },
 }, {
     createdAt: false,
     updatedAt: false,
@@ -56,6 +79,10 @@ export const UserModel: ModelDefined<User, {}> = KcContext.define("users", {
             const salt = bcrypt.genSaltSync(10, "a");
             //@ts-ignore
             user.password = bcrypt.hashSync(user.password, salt);
+            const bgColor = randomColor({luminosity: 'dark', format: "hex"}).substring(1);
+            const fgColor = randomColor({luminosity: 'light', format: "hex"}).substring(1);
+            if(!user.dataValues.avatar)
+                user.dataValues.avatar = `https://ui-avatars.com/api/?name=${user.dataValues.firstname}+${user.dataValues.lastname}&background=${bgColor}&color=${fgColor}`;
         },
         beforeUpdate: (user: Model<User>) => {
             const salt = bcrypt.genSaltSync(10, "a");

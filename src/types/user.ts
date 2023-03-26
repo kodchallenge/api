@@ -10,4 +10,11 @@ export interface User {
     createdAt: Date;
     deletedAt?: Date | null;
     verifiedAt?: Date | null;
+    avatar?: string | null;
+    biography?: string | null;
+    website?: string | null;
+    location?: string | null;
+    github?: string | null;
+    twitter?: string | null;
+    linkedin?: string | null;
 }

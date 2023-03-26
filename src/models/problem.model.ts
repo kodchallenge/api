@@ -20,6 +20,9 @@ export const ProblemModel: ModelDefined<Problem, {}> = KcContext.define("problem
     },
     io: {
         type: Sequelize.STRING,
+        get: function() {
+            return JSON.parse(this.getDataValue("io"))
+        }
     },
     score: {
         type: Sequelize.INTEGER,
