@@ -24,7 +24,7 @@ export class SolutionRepository {
         return solution;
     }
 
-    public static async getById(id: number): Promise<Solution & {user: User, problem: Problem, language: Language} | null> {
+    public static async getById(id: number): Promise<Solution & { user: User, problem: Problem, language: Language } | null> {
         const model = await SolutionModel.findOne({
             where: {
                 id,
@@ -35,6 +35,14 @@ export class SolutionRepository {
                 UserModel
             ]
         })
-        return model?.toJSON() as (Solution & {user: User, problem: Problem, language: Language});
+        return model?.toJSON() as (Solution & { user: User, problem: Problem, language: Language });
+    }
+
+    // approve solution and update model
+    public static async approveWithScore(id: number, score: number): Promise<void> {
+        await SolutionModel.update({
+            score,
+            approved: true,
+        }, { where: { id: id } })
     }
 }

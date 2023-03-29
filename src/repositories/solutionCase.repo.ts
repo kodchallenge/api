@@ -19,4 +19,14 @@ export class SolutionCaseRepository {
         });
         return solution;
     }
+
+    // get by solution id
+    public static async getBySolutionId(solutionId: number): Promise<SolutionCase[]> {
+        const model = await SolutionCaseModel.findAll({
+            where: {
+                solutionId,
+            }
+        })
+        return model?.map(x => x.toJSON()) as SolutionCase[];
+    }
 }
