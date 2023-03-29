@@ -52,3 +52,4 @@ ProblemModel.hasMany(ProblemBaseCodeModel, {
 ProblemModel.hasMany(SolutionModel, {
     foreignKey: "problem_id",
 })
+SolutionModel.belongsTo(ProblemModel, { foreignKey: "problem_id" })

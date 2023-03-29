@@ -2,16 +2,16 @@ import { Request, Response } from "express";
 import { SolutionRepository } from "../repositories";
 
 export const saveSolution = async (req: Request, res: Response) => {
-    const { code, score, cases, problemId } = req.body;
+    const { code, language, problem } = req.body;
     //@ts-ignore
     const userId = req.user.id;
-    console.log("USER ID ", userId)
     const solution = await SolutionRepository.save({
-        cases,
+        approved: false,
         code,
-        problemId,
-        score,
+        problemId: problem,
+        score: 0,
         userId,
+        languageId: language
     })
     return res.status(200).json(solution);
 }

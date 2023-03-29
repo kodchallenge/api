@@ -2,6 +2,7 @@ import Sequelize, { ModelDefined } from "sequelize";
 import { KcContext } from "../configs/db";
 import { Language } from "../types";
 import { ProblemBaseCodeModel } from "./problemBaseCode.model";
+import { SolutionModel } from "./solution.model";
 
 export const LanguageModel: ModelDefined<Language, {}> = KcContext.define("languages", {
     id: {
@@ -16,8 +17,13 @@ export const LanguageModel: ModelDefined<Language, {}> = KcContext.define("langu
     },
 }, { createdAt: false, updatedAt: false, deletedAt: false })
 
+// relations
 LanguageModel.hasMany(ProblemBaseCodeModel, {
     foreignKey: "language_id",
 })
-
 ProblemBaseCodeModel.belongsTo(LanguageModel, { foreignKey: "language_id" })
+
+LanguageModel.hasMany(SolutionModel, {
+    foreignKey: "language_id",
+})
+SolutionModel.belongsTo(LanguageModel, { foreignKey: "language_id" })

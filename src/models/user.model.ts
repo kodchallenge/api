@@ -102,3 +102,4 @@ UserModel.prototype.comparePassword = async function (password: string): Promise
 UserModel.hasMany(SolutionModel, {
     foreignKey: "user_id",
 })
+SolutionModel.belongsTo(UserModel, { foreignKey: "user_id" })

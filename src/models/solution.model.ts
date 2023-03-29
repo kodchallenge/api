@@ -1,6 +1,7 @@
 import Sequelize, { ModelDefined } from "sequelize";
 import { KcContext } from "../configs/db";
 import { Solution } from "../types";
+import { SolutionCaseModel } from "./solutionCase.model";
 
 export const SolutionModel: ModelDefined<Solution, {}> = KcContext.define("solutions", {
     id: {
@@ -13,9 +14,6 @@ export const SolutionModel: ModelDefined<Solution, {}> = KcContext.define("solut
     },
     score: {
         type: Sequelize.INTEGER,
-    },
-    cases: {
-        type: Sequelize.ARRAY(Sequelize.BOOLEAN),
     },
     createdAt: {
         type: Sequelize.DATE,
@@ -30,4 +28,18 @@ export const SolutionModel: ModelDefined<Solution, {}> = KcContext.define("solut
         type: Sequelize.INTEGER,
         field: "problem_id",
     },
+    languageId: {
+        type: Sequelize.INTEGER,
+        field: "language_id",
+    },
+    approved: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+    }
 }, { createdAt: false, updatedAt: false, deletedAt: false, underscored: true })
+
+
+// relations
+SolutionModel.hasMany(SolutionCaseModel, {
+    foreignKey: "solution_id",
+})

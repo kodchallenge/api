@@ -2,8 +2,9 @@ export interface Solution {
     id: number;
     userId: number;
     problemId: number;
+    languageId: number;
     code: string;
     score: number;
-    cases: boolean[];
     createdAt: Date;
+    approved: boolean;
 }

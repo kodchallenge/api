@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 import { mkdir } from "fs/promises";
 import fse from "fs-extra";
 import path from "path";
-import { ProblemRepository } from "../repositories";
+import { ProblemRepository, SolutionCaseRepository, SolutionRepository } from "../repositories";
 
 export const runCode = async (req: Request, res: Response) => {
     const { code, language, userId, problemSlug }: {
@@ -34,35 +34,46 @@ export const runCode = async (req: Request, res: Response) => {
 }
 
 export const runTestCases = async (req: Request, res: Response) => {
-    const { code, language, userId, problemSlug, index: caseIndex }: {
-        code: string,
-        language: string,
-        userId: number,
-        problemSlug: string,
-        index: number
+    const { solution: solutionId, index: caseIndex }: {
+        index: number,
+        solution: number
     } = req.body;
 
-    const problem = await ProblemRepository.getBySlug(problemSlug);
-    if (!problem) {
-        return res.json({ status: false, message: "Problem bulunamadı" })
+    const solution = await SolutionRepository.getById(solutionId);
+
+    if(!solution) {
+        return res.json({ status: false, message: "Çözüm bulunamadı" })
     }
-    const io = JSON.parse(problem.dataValues.io)[caseIndex] as { input: string, output: string };
+    const language = solution.language.slug;
+
+    const io = solution.problem.io[caseIndex] as { input: string, output: string };
 
     if (!io) {
         return res.json({ status: false, message: "Test case bulunamadı" })
     }
+    console.log("IO: ", io)
 
-    const problemPath = path.join(process.env.PROBLEMS_PATH ?? "", problemSlug, language);
+    console.error("PROBLEM: ", solution.problem.slug)
+    const problemPath = path.join(process.env.PROBLEMS_PATH ?? "", solution.problem.slug, language);
 
-    const solutionPath = path.join(process.env.SOLUTION_PATH ?? "", userId.toString(), problemSlug, language);
+    const solutionPath = path.join(process.env.SOLUTION_PATH ?? "", solution.userId+"", solution.problem.slug, language);
 
     fse.copySync(problemPath, solutionPath, { overwrite: true })
-    fse.writeFile(path.join(solutionPath, "solution." + language), code)
-    exec(`kcompiler --path=${solutionPath} --language=${language} --args=${io.input}`, (err, stdout, stderr) => {
+    fse.writeFile(path.join(solutionPath, "solution." + language), solution.code)
+    exec(`kcompiler --path=${solutionPath} --language=${language} --args=${io.input}`, async (err, stdout, stderr) => {
         stdout = stdout.trim();
+        let status = true;
         if (stderr || stdout !== io.output) {
-            return res.json({ status: false })
+            status = false;
         }
-        res.json({ status: true })
+
+        const _case = await SolutionCaseRepository.save({
+            caseIndex,
+            output: stdout,
+            solutionId: solutionId,
+            status
+        })
+
+        res.status(200).json(_case)
     })
 }
