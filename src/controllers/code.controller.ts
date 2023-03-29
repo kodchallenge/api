@@ -46,6 +46,7 @@ export const runTestCases = async (req: Request, res: Response) => {
     }
     const language = solution.language.slug;
 
+    // @ts-ignore
     const io = solution.problem.io[caseIndex] as { input: string, output: string };
 
     if (!io) {
