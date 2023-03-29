@@ -1,6 +1,5 @@
 import Router from "express-promise-router";
 import { getUserById, getUserByUsername, getUsers } from "../controllers/user.controller";
-import { authenticationMiddleware } from "../middlewares/authenticationMiddleware";
 
 const userRouter = Router()
 userRouter.get("/", getUsers)

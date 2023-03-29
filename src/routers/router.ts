@@ -4,6 +4,7 @@ import authRouter from './auth.router'
 import categoryRouter from './category.router'
 import codeRouter from './code.router'
 import problemRouter from './problem.router'
+import solutionRouter from './solution.router'
 import userRouter from './user.router'
 const router = express.Router()
 
@@ -12,5 +13,6 @@ router.use("/categories", categoryRouter)
 router.use("/code", codeRouter)
 router.use("/users", userRouter)
 router.use("/auth", authRouter)
+router.use("/solutions", solutionRouter)
 
 export default router;

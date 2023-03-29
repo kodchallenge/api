@@ -3,6 +3,7 @@ import { KcContext } from "../configs/db";
 import { Problem } from "../types";
 import { CategoryModel } from "./category.model";
 import { ProblemBaseCodeModel } from "./problemBaseCode.model";
+import { SolutionModel } from "./solution.model";
 
 export const ProblemModel: ModelDefined<Problem, {}> = KcContext.define("problems", {
     id: {
@@ -45,5 +46,9 @@ export const ProblemModel: ModelDefined<Problem, {}> = KcContext.define("problem
 }, { createdAt: false, updatedAt: false, deletedAt: false, underscored: true })
 
 ProblemModel.hasMany(ProblemBaseCodeModel, {
+    foreignKey: "problem_id",
+})
+
+ProblemModel.hasMany(SolutionModel, {
     foreignKey: "problem_id",
 })

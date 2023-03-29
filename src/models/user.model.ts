@@ -3,6 +3,7 @@ import { KcContext } from "../configs/db";
 import { User } from "../types";
 import bcrypt from "bcrypt";
 import randomColor from "randomcolor";
+import { SolutionModel } from "./solution.model";
 
 export const UserModel: ModelDefined<User, {}> = KcContext.define("users", {
     id: {
@@ -95,3 +96,9 @@ export const UserModel: ModelDefined<User, {}> = KcContext.define("users", {
 UserModel.prototype.comparePassword = async function (password: string): Promise<boolean> {
     return bcrypt.compare(password, this.password);
 }
+
+
+// relations
+UserModel.hasMany(SolutionModel, {
+    foreignKey: "user_id",
+})
