@@ -45,4 +45,21 @@ export class SolutionRepository {
             approved: true,
         }, { where: { id: id } })
     }
+
+    public static async getApprovedSolutionsByUserId(userId: number): Promise<(Solution & { problem: Problem, language: Language })[]> {
+        const models = await SolutionModel.findAll({
+            where: {
+                userId,
+                approved: true,
+            },
+            include: [
+                ProblemModel,
+                LanguageModel,
+            ],
+            order: [
+                ['id', 'DESC']
+            ]
+        })
+        return models.map(model => model.toJSON() as (Solution & { problem: Problem, language: Language }));
+    }
 }

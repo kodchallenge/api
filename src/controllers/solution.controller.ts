@@ -45,5 +45,15 @@ export const approveSolution = async (req: Request, res: Response) => {
     score = Math.round(score)
 
     await SolutionRepository.approveWithScore(solutionId, score);
-    return res.status(200).json({ status: true });
+    return res.status(200).json({ status: true, message: "Çözümünüz Onaylandı 🎉" });
+}
+
+export const getApprovedSolutionsByUserId = async (req: Request, res: Response) => {
+    const userId = parseInt(req.params.id);
+    const solutions = await SolutionRepository.getApprovedSolutionsByUserId(userId);
+    return res.status(200).json({
+        solutions,
+        status: true,
+        message: "Çözümler başarıyla getirildi"
+    });
 }

@@ -1,6 +1,6 @@
 import Sequelize, { ModelDefined } from "sequelize";
 import { KcContext } from "../configs/db";
-import { Solution } from "../types";
+import { Solution, SolutionState } from "../types";
 import { SolutionCaseModel } from "./solutionCase.model";
 
 export const SolutionModel: ModelDefined<Solution, {}> = KcContext.define("solutions", {
@@ -35,6 +35,10 @@ export const SolutionModel: ModelDefined<Solution, {}> = KcContext.define("solut
     approved: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
+    },
+    state: {
+        type: Sequelize.ENUM,
+        values: Object.values(SolutionState),
     }
 }, { createdAt: false, updatedAt: false, deletedAt: false, underscored: true })
 

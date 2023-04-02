@@ -7,4 +7,12 @@ export interface Solution {
     score: number;
     createdAt: Date;
     approved: boolean;
+    state: SolutionState;
+}
+
+export enum SolutionState {
+    Success = "success",
+    Failed = "failed",
+    BuildError = "build-error",
+    Timeout = "timeout"
 }
