@@ -1,5 +1,5 @@
 import { Model } from "sequelize"
-import { LanguageModel, ProblemModel, UserModel } from "../models";
+import { LanguageModel, ProblemModel, SolutionCaseModel, UserModel } from "../models";
 import { SolutionModel } from "../models/solution.model";
 import { Language, Problem, Solution, SolutionState, User } from "../types"
 
@@ -56,6 +56,10 @@ export class SolutionRepository {
             include: [
                 ProblemModel,
                 LanguageModel,
+                {
+                    model: SolutionCaseModel,
+                    as: "cases"
+                }
             ],
             order: [
                 ['id', 'DESC']

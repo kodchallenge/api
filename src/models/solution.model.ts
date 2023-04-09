@@ -46,4 +46,5 @@ export const SolutionModel: ModelDefined<Solution, {}> = KcContext.define("solut
 // relations
 SolutionModel.hasMany(SolutionCaseModel, {
     foreignKey: "solution_id",
+    as: "cases",
 })
