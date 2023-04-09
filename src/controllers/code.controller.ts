@@ -72,42 +72,6 @@ export const runCode = async (req: Request, res: Response) => {
         }
         res.json({ status: true, output: output?.trim() })
     })
-    // const kcompiler = spawn('kcompiler', [`--path=${solutionPath}`, `--language=${language}`, `--args=${args}`])
-    // let timeoutId: any = 0;
-    // kcompiler.stderr.on('data', (data) => {
-    //     clearTimeout(timeoutId)
-    //     //res.json({ status: false, output: data.toString().trim() })
-    // })
-    // let output = ''
-    // kcompiler.stdout.on('data', (data) => {
-    //     output += data.toString()
-    // })
-
-    // kcompiler.on('close', (code, signal) => {
-    //     if(signal === "SIGTERM") {
-    //         return res.status(200).json({ status: false, output: "Timeout!" })
-    //     }
-    //     clearTimeout(timeoutId)
-    //     console.log("asld kaslşd kjalsşdk aşlsd kl")
-    //     res.json({ status: true, output: output.trim() })
-    // })
-
-    // // set timeout
-    // timeoutId = setTimeout(() => {
-    //     kcompiler.kill("SIGTERM")
-    // }, eval(process.env.CODE_RUN_TIMEOUT))
-    // const kodCompilerPID = exec(`kcompiler --path=${solutionPath} --language=${language} --args=${args}`, (err, stdout, stderr) => {
-    //     if (stderr) {
-    //         return res.json({ status: false, output: stderr })
-    //     }
-    //     clearTimeout(timeoutId)
-    //     res.json({ status: true, output: stdout.trim() })
-    // }).pid
-    // const timeoutId = setTimeout(() => {
-    //     console.log("asldk aslkşdj lasşdjk lasşd ", kodCompilerPID)
-    //     process.kill(kodCompilerPID ?? 0)
-    //     res.json({ status: false, output: "Timeout!" })
-    // }, eval(process.env.CODE_RUN_TIMEOUT))
 }
 
 export const runTestCases = async (req: Request, res: Response) => {
@@ -164,36 +128,4 @@ export const runTestCases = async (req: Request, res: Response) => {
         const _case = await SolutionCaseRepository.save(caseData)
         res.status(200).json(_case)
     })
-
-    // const kodCompilerPID = exec(`kcompiler --path=${solutionPath} --language=${language} --args=${io.input}`, async (err, stdout, stderr) => {
-    //     stdout = stdout.trim();
-    //     let status = true;
-    //     if (stderr || stdout !== io.output) {
-    //         status = false;
-    //     }
-
-    //     const _case = await SolutionCaseRepository.save({
-    //         caseIndex,
-    //         output: stdout,
-    //         solutionId: solutionId,
-    //         status,
-    //         build: Boolean(stderr),
-    //         timeout: false
-    //     })
-    //     clearTimeout(timeoutId)
-    //     res.status(200).json(_case)
-    // }).pid
-    // const timeoutId = setTimeout(() => {
-    //     console.log("asldk aslkşdj lasşdjk lasşd ")
-    //     process.kill(kodCompilerPID ?? 0)
-    //     const _case = SolutionCaseRepository.save({
-    //         caseIndex,
-    //         output: "Timeout",
-    //         solutionId: solutionId,
-    //         status: false,
-    //         build: false,
-    //         timeout: true
-    //     })
-    //     res.status(200).json(_case)
-    // }, eval(process.env.CODE_RUN_TIMEOUT))
 }
