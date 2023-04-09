@@ -5,17 +5,11 @@ import { Solution, SolutionCase } from "../types"
 
 export class SolutionCaseRepository {
     public static async save({
-        caseIndex,
-        output,
-        solutionId,
-        status
+        ...res
     }: Omit<SolutionCase, "id">): Promise<Model<SolutionCase, {}> | null> {
         // save solution
         const solution = await SolutionCaseModel.create({
-            caseIndex,
-            output,
-            solutionId,
-            status
+            ...res
         });
         return solution;
     }

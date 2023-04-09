@@ -4,4 +4,6 @@ export interface SolutionCase {
     caseIndex: number;
     output: string;
     status: boolean;
+    build: boolean;
+    timeout: boolean;
 }

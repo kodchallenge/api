@@ -1,7 +1,7 @@
 import { Model } from "sequelize"
 import { LanguageModel, ProblemModel, UserModel } from "../models";
 import { SolutionModel } from "../models/solution.model";
-import { Language, Problem, Solution, User } from "../types"
+import { Language, Problem, Solution, SolutionState, User } from "../types"
 
 export class SolutionRepository {
     public static async save({
@@ -39,10 +39,11 @@ export class SolutionRepository {
     }
 
     // approve solution and update model
-    public static async approveWithScore(id: number, score: number): Promise<void> {
+    public static async approveWithScore(id: number, score: number, state: SolutionState): Promise<void> {
         await SolutionModel.update({
             score,
             approved: true,
+            state
         }, { where: { id: id } })
     }
 

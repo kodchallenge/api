@@ -22,4 +22,10 @@ export const SolutionCaseModel: ModelDefined<SolutionCase, {}> = KcContext.defin
     status: {
         type: Sequelize.BOOLEAN,
     },
+    build: {
+        type: Sequelize.BOOLEAN,
+    },
+    timeout: {
+        type: Sequelize.BOOLEAN,
+    },
 }, { createdAt: false, updatedAt: false, deletedAt: false, underscored: true })

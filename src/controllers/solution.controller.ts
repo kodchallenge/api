@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { ProblemRepository, SolutionCaseRepository, SolutionRepository } from "../repositories";
+import { SolutionState } from "../types";
 
 export const saveSolution = async (req: Request, res: Response) => {
     const { code, language, problem } = req.body;
@@ -11,7 +12,7 @@ export const saveSolution = async (req: Request, res: Response) => {
         problemId: problem,
         score: 0,
         userId,
-        languageId: language
+        languageId: language,
     })
     return res.status(200).json(solution);
 }
@@ -36,6 +37,7 @@ export const approveSolution = async (req: Request, res: Response) => {
     if (!problem) {
         return res.status(400).json({ message: "Problem bulunamadı" })
     }
+
     let score = 0;
     for (const _case of cases) {
         if (_case.status) {
@@ -43,8 +45,22 @@ export const approveSolution = async (req: Request, res: Response) => {
         }
     }
     score = Math.round(score)
+    let state: SolutionState = SolutionState.Success;
+    for (const _case of cases) {
+        if (_case.status) continue;
+        if (_case.timeout) {
+            state = SolutionState.Timeout;
+            break;
+        }
+        if (_case.build) {
+            state = SolutionState.BuildError;
+            break;
+        }
+        state = SolutionState.Failed;
+        break;
+    }
 
-    await SolutionRepository.approveWithScore(solutionId, score);
+    await SolutionRepository.approveWithScore(solutionId, score, state);
     return res.status(200).json({ status: true, message: "Çözümünüz Onaylandı 🎉" });
 }
 
