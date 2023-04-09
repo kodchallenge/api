@@ -125,6 +125,9 @@ export const runTestCases = async (req: Request, res: Response) => {
             caseData.timeout = true;
             caseData.output = "Timeout!";
         }
+        if(output?.trim() !== io.output.trim()) {
+            caseData.status = false;
+        }
         const _case = await SolutionCaseRepository.save(caseData)
         res.status(200).json(_case)
     })
