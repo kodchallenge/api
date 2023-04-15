@@ -42,4 +42,15 @@ export class UserRepository {
     public static async create(user: Omit<User, "id">): Promise<Model<User, {}>> {
         return UserModel.create(user)
     }
+    
+    public static async getByRefreshToken(refreshToken: string): Promise<Model<User, {}> | null> {
+        return UserModel.findOne({
+            where: {
+                refreshToken,
+                isDeleted: false,
+                isVerified: true,
+            },
+            attributes: { exclude: ["password"] },
+        })
+    }
 }

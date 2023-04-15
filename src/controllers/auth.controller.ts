@@ -46,3 +46,16 @@ export const signup = async (req: Request, res: Response) => {
     });
     res.json(user)
 }
+
+export const refreshToken = async (req: Request, res: Response) => {
+    const refreshToken = req.body.refreshToken;
+    const user = await UserRepository.getByRefreshToken(refreshToken);
+    if (!user) {
+        res.status(401).json({ message: "Token expired" })
+        return;
+    }
+    user.setDataValue("password", "")
+    // return user and jwt token
+    const jwtToken = generateToken(user);
+    res.json({ ...user.dataValues, token: jwtToken })
+}
