@@ -66,13 +66,13 @@ export const saveProblemWithAllLangs = async (req: Request, res: Response, next:
         isPrivate: false,
         isDeleted: false,
     });
-    const languages = await LanguageRepository.getList();
+    
     // Save langs
+    const languages = await LanguageRepository.getList();
     Promise.all(langs.map(async (lang, index) => {
-        // Save problem base code
         const languageId = languages.find(x => x.slug == lang.name)?.id as number;
         if(!languageId) return;
-        // console.log(problem.dataValues.id)
+
         await ProblemBaseCodeRepository.save({
             problemId: problem.dataValues.id,
             code: `${lang.code}`,
