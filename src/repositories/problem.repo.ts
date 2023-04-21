@@ -28,4 +28,7 @@ export default class ProblemRepository {
             ]
         })
     }
+    public static async save(problem: Omit<Problem, "id">): Promise<Model<Problem, {}>> {
+        return ProblemModel.create(problem)
+    }
 }

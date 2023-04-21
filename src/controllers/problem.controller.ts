@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { Model } from "sequelize";
-import { ProblemRepository } from "../repositories";
+import { LanguageRepository, ProblemBaseCodeRepository, ProblemRepository } from "../repositories";
 import { Problem } from "../types";
 
 //Helpers
@@ -41,4 +41,44 @@ export const getProblemByIdOrSlug = async (req: Request<{ id: number | string }>
     }
 
     res.json(withIO(problem))
+}
+
+export const saveProblemWithAllLangs = async (req: Request, res: Response, next: NextFunction) => {
+    const { title, description, io, slug, score, langs } = req.body as {
+        title: string,
+        slug: string,
+        score: number,
+        description: string,
+        io: string,
+        langs: {
+            name: string,
+            code: string
+        }[]
+    };
+    console.log(typeof score)
+    // Save problem
+    const problem = await ProblemRepository.save({
+        title, 
+        description, 
+        io, 
+        slug, 
+        score,
+        isPrivate: false,
+        isDeleted: false,
+    });
+    const languages = await LanguageRepository.getList();
+    // Save langs
+    Promise.all(langs.map(async (lang, index) => {
+        // Save problem base code
+        const languageId = languages.find(x => x.slug == lang.name)?.id as number;
+        if(!languageId) return;
+        // console.log(problem.dataValues.id)
+        await ProblemBaseCodeRepository.save({
+            problemId: problem.dataValues.id,
+            code: `${lang.code}`,
+            languageId,
+        })
+    })).finally(() => {
+        res.json({status: true, message: "ok"})
+    })
 }

@@ -7,5 +7,5 @@ export interface Problem {
     score: number;
     isPrivate: boolean;
     isDeleted: boolean;
-    categoryId: number;
+    categoryId?: number;
 }

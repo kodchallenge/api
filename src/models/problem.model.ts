@@ -8,7 +8,8 @@ import { SolutionModel } from "./solution.model";
 export const ProblemModel: ModelDefined<Problem, {}> = KcContext.define("problems", {
     id: {
         type: Sequelize.INTEGER,
-        primaryKey: true
+        primaryKey: true,
+        autoIncrement: true,
     },
     title: {
         type: Sequelize.STRING,
@@ -43,6 +44,11 @@ export const ProblemModel: ModelDefined<Problem, {}> = KcContext.define("problem
         defaultValue: false,
         field: "is_deleted"
     },
+    categoryId: {
+        type: Sequelize.INTEGER,
+        field: "category_id",
+        defaultValue: 1
+    }
 }, { createdAt: false, updatedAt: false, deletedAt: false, underscored: true })
 
 ProblemModel.hasMany(ProblemBaseCodeModel, {
