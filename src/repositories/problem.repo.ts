@@ -6,8 +6,9 @@ import { Problem } from "../types"
 
 export default class ProblemRepository {
     public static async getList(): Promise<Model<Problem, {}>[]> {
-        console.log('Test log: ', process.env.DATABASE_PORT)
-        return ProblemModel.findAll()
+        return ProblemModel.findAll({
+            where: { isDeleted: false, isPrivate: false, },
+        })
     }
 
     public static async getById(id: number): Promise<Model<Problem, {}> | null> {

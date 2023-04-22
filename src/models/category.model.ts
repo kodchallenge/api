@@ -13,4 +13,4 @@ export const CategoryModel: ModelDefined<Category, {}> = KcContext.define("categ
     }
 }, { createdAt: false, updatedAt: false })
 
-// ProblemModel.belongsTo(CategoryModel, { foreignKey: "category_id" })
+ProblemModel.belongsTo(CategoryModel, { foreignKey: "category_id" })
