@@ -13,6 +13,7 @@ export const saveSolution = async (req: Request, res: Response) => {
         score: 0,
         userId,
         languageId: language,
+        state: SolutionState.Pending,
     })
     return res.status(200).json(solution);
 }

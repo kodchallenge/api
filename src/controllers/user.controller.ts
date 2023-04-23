@@ -8,10 +8,10 @@ export const getUsers = async (req: Request, res: Response) => {
 }
 
 
-export const getUserById = async (req: Request<{ id: number }>, res: Response, next: NextFunction) => {
+export const getUserById = async (req: Request<{ id: string }>, res: Response, next: NextFunction) => {
     try {
-        parseInt(req.params.id) // check if id is a number
-        const user = await UserRepository.getById(req.params.id)
+        const userId = parseInt(req.params.id) // check if id is a number
+        const user = await UserRepository.getById(userId)
         res.json(user)
     } catch(err) {
         next()
