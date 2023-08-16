@@ -4,8 +4,9 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
+    "dev": "ts-node -T src/index.ts",
     "build": "tsc",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
+    "start": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
     "kill-port": "netstat -vanp tcp | grep 3333"
   },
   "keywords": [],

@@ -4,6 +4,7 @@ import fse from "fs-extra";
 import path from "path";
 import { ProblemRepository, SolutionCaseRepository, SolutionRepository } from "../repositories";
 import { SolutionCase } from "../types";
+import terminal from "../utils/terminal";
 
 const compileCode = ({
     path,
@@ -48,11 +49,16 @@ export const runCode = async (req: Request, res: Response) => {
 
     const problem = await ProblemRepository.getBySlug(problemSlug);
     if (!problem) {
-        return res.json({ status: false, output: "Problem bulunamadı" })
+        return res.json({ status: false, output: terminal.colorize("Problem bulunamadı", "ERROR") })
     }
 
     const args = JSON.parse(problem.dataValues.io)[0].input;
     const problemPath = path.join(process.env.PROBLEMS_PATH ?? "", problemSlug, language);
+
+    if(!fse.existsSync(problemPath)) {
+        return res.json({ status: false, output: terminal.colorize("Henüz bu soruyu bu dilde çözemezsiniz!", "ERROR") })
+    }
+
 
     const solutionPath = path.join(process.env.SOLUTION_PATH ?? "", userId.toString(), problemSlug, language);
 
@@ -65,10 +71,10 @@ export const runCode = async (req: Request, res: Response) => {
         path: solutionPath
     }, (output, err, signal) => {
         if(err) {
-            return res.json({ status: false, output: err })
+            return res.json({ status: false, output: terminal.colorize(err, "ERROR") })
         }
         if (signal === "SIGTERM") {
-            return res.status(200).json({ status: false, output: "Timeout!" })
+            return res.status(200).json({ status: false, output: terminal.colorize("Timeout!", "WARNING") })
         }
         res.json({ status: true, output: output?.trim() })
     })
