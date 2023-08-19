@@ -8,6 +8,7 @@ export default class ProblemRepository {
     public static async getList(): Promise<Model<Problem, {}>[]> {
         return ProblemModel.findAll({
             where: { isDeleted: false, isPrivate: false, },
+            order: [["id", "ASC"]],
         })
     }
 
