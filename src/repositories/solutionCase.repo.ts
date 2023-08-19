@@ -14,6 +14,14 @@ export class SolutionCaseRepository {
         return solution;
     }
 
+    public static async saveMany({
+        ...res
+    }: Omit<SolutionCase, "id">[]): Promise<void> {
+        // save solution
+        await SolutionCaseModel.bulkCreate(res);
+    }
+
+
     // get by solution id
     public static async getBySolutionId(solutionId: number): Promise<SolutionCase[]> {
         const model = await SolutionCaseModel.findAll({
