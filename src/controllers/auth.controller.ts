@@ -4,16 +4,16 @@ import { UserRepository } from "../repositories";
 import { User } from "../types";
 
 export const signin = async (req: Request, res: Response) => {
-    const { email, password } = req.body as { email: string, password: string };
-    const user = await UserRepository.getByEmail(email);
+    const { usernameOrEmail, password } = req.body as { usernameOrEmail: string, password: string };
+    const user = await UserRepository.getByUsernameOrEmail(usernameOrEmail);
     if (!user) {
-        res.status(404).json({ message: "User not found" })
+        res.status(404).json({ message: "Kullanıcı bulunamadı" })
         return;
     }
     // @ts-ignore
     const isPasswordCorrect = await user.comparePassword(password);
     if (!isPasswordCorrect) {
-        res.status(401).json({ message: "Wrong password" })
+        res.status(401).json({ message: "Şifre hatalı" })
         return;
     }
     user.setDataValue("password", "")

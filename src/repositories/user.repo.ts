@@ -1,4 +1,4 @@
-import { Model } from "sequelize";
+import { Model, Op } from "sequelize";
 import { UserModel } from "../models";
 import { User } from "../types";
 
@@ -36,6 +36,19 @@ export class UserRepository {
                 isDeleted: false,
                 isVerified: true,
             }
+        })
+    }
+
+    public static async getByUsernameOrEmail(usernameOrEmail: string): Promise<Model<User, {}> | null> {
+        return UserModel.findOne({
+            where: {
+                isDeleted: false,
+                isVerified: true,
+                [Op.or]: [
+                    { username: usernameOrEmail },
+                    { email: usernameOrEmail },
+                ]
+            },
         })
     }
 
