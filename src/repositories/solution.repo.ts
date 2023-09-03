@@ -67,4 +67,25 @@ export class SolutionRepository {
         })
         return models.map(model => model.toJSON() as (Solution & { problem: Problem, language: Language }));
     }
+
+    public static async getProblemSolutionsByUserId(userId: number, problemId: number): Promise<(Solution & { problem: Problem, language: Language })[]> {
+        const models = await SolutionModel.findAll({
+            where: {
+                userId,
+                problemId,
+                approved: true,
+            },
+            include: [
+                LanguageModel,
+                {
+                    model: SolutionCaseModel,
+                    as: "cases"
+                }
+            ],
+            order: [
+                ['id', 'DESC']
+            ]
+        })
+        return models.map(model => model.toJSON() as (Solution & { problem: Problem, language: Language }));
+    }
 }

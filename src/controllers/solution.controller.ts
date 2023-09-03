@@ -33,6 +33,10 @@ export const approveSolution = async (req: Request, res: Response) => {
         return res.status(403).json({ message: "Bu çözümü onaylayamazsınız" })
     }
 
+    if(solution.approved) {
+        return res.status(400).json({ message: "Çözüm zaten onaylanmış" })
+    }
+
     const cases = await SolutionCaseRepository.getBySolutionId(solutionId);
     const problem = await ProblemRepository.getById(problemId);
     if (!problem) {
@@ -68,6 +72,18 @@ export const approveSolution = async (req: Request, res: Response) => {
 export const getApprovedSolutionsByUserId = async (req: Request, res: Response) => {
     const userId = parseInt(req.params.id);
     const solutions = await SolutionRepository.getApprovedSolutionsByUserId(userId);
+    return res.status(200).json({
+        solutions,
+        status: true,
+        message: "Çözümler başarıyla getirildi"
+    });
+}
+
+export const getProblemSolutionsByUserId = async (req: Request, res: Response) => {
+    const problemId = parseInt(req.params.id);
+    const userId = parseInt(req.params.userId);
+    const solutions = await SolutionRepository.getProblemSolutionsByUserId(userId, problemId);
+
     return res.status(200).json({
         solutions,
         status: true,

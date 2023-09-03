@@ -14,11 +14,10 @@ export class SolutionCaseRepository {
         return solution;
     }
 
-    public static async saveMany({
-        ...res
-    }: Omit<SolutionCase, "id">[]): Promise<void> {
+    public static async saveMany(res: Omit<SolutionCase, "id">[]): Promise<void> {
         // save solution
-        await SolutionCaseModel.bulkCreate(res);
+        console.log("RES => ", res)
+        await SolutionCaseModel.bulkCreate(res).then(r => console.log("RESULT => ", r)).catch(console.error);
     }
 
 

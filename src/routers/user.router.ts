@@ -4,9 +4,9 @@ import { getApprovedSolutionsByUserId } from "../controllers/solution.controller
 import { authenticationMiddleware } from "../middlewares/authenticationMiddleware";
 
 const userRouter = Router()
-userRouter.get("/", getUsers)
-userRouter.get("/:id", getUserById)
-userRouter.get("/:username", getUserByUsername)
+userRouter.get("/", authenticationMiddleware, getUsers)
+userRouter.get("/:id", authenticationMiddleware, getUserById)
+userRouter.get("/:username", authenticationMiddleware, getUserByUsername)
 
 userRouter.get("/:id/solutions", authenticationMiddleware, getApprovedSolutionsByUserId)
 

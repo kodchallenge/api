@@ -96,7 +96,7 @@ export const runCode = async (req: Request, res: Response) => {
         // save cases
         await SolutionCaseRepository.saveMany(cases);
 
-        return res.json({ status: true, cases: codeResult.cases })
+        return res.json({ status: true, id: solution.dataValues.id, cases: codeResult.cases })
 
 
     } catch(err: any) {
